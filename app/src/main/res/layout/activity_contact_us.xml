@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="#010102"
+tools:context=".ContactUsActivity">
+
+<!-- Contact Information Text -->
+<TextView
+    android:id="@+id/contactInfo"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="32dp"
+    android:text="We'd love to hear from you! Whether you've got feedback, questions, or just want to say hi—reach out anytime."
+    android:textColor="#FBFBFB"
+    android:textSize="16sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+<!-- Address Text -->
+<TextView
+    android:id="@+id/address"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:text="Address: 123 Walsh Street, Cape Town, South Africa"
+    android:textColor="#FBFBFB"
+    android:textSize="14sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/contactInfo" />
+
+<!-- Email Text -->
+<TextView
+    android:id="@+id/emailContact"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:text="Email: support@packpals.com"
+    android:textColor="#FBFBFB"
+    android:textSize="14sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/address" />
+
+<!-- Phone Text -->
+<TextView
+    android:id="@+id/phoneContact"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:text="Phone: +27 21 855 1234"
+    android:textColor="#FBFBFB"
+    android:textSize="14sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/emailContact" />
+
+<!-- Social Media Links -->
+<TextView
+    android:id="@+id/socialLinks"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:text="Social: Twitter | Instagram | Facebook"
+    android:textColor="#FBFBFB"
+    android:textSize="14sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/phoneContact" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
