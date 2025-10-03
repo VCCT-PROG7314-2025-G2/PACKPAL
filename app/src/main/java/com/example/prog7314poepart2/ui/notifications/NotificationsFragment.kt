@@ -1,55 +1,86 @@
 package com.example.prog7314poepart2.ui.notifications
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.Fragment
+import android.widget.Button
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment  // Make sure to import the correct Fragment
 import com.example.prog7314poepart2.LoginActivity
-import com.example.prog7314poepart2.databinding.FragmentNotificationsBinding
+import com.example.prog7314poepart2.ManageProfileActivity
+import com.example.prog7314poepart2.ManageTrips
+import com.example.prog7314poepart2.R
 
 class NotificationsFragment : Fragment() {
 
-    private var _binding: FragmentNotificationsBinding? = null
-    private val binding get() = _binding!!
-
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+    ): View? {
+        // Inflate the fragment layout
+        val rootView = inflater.inflate(R.layout.fragment_notifications, container, false)
 
-        // Load currently logged-in email
-        val sharedPref = requireActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
-        val email = sharedPref.getString("logged_in_email", "No Email Found")
+        // Get references to the buttons
+        val editProfileButton = rootView.findViewById<Button>(R.id.editProfileButton)
+        val manageTripsButton = rootView.findViewById<Button>(R.id.manageTripsButton)
+        val helpButton = rootView.findViewById<Button>(R.id.helpButton)
+        val aboutButton = rootView.findViewById<Button>(R.id.aboutButton)
+        val logoutButton = rootView.findViewById<Button>(R.id.logoutButton)
 
-        binding.email.text = "Email: $email"
-
-        // Logout button action
-        binding.logoutButton.setOnClickListener {
-            // 1️⃣ Clear logged-in email
-            sharedPref.edit().remove("logged_in_email").apply()
-
-            // 2️⃣ Show toast
-            Toast.makeText(requireContext(), "Logged out", Toast.LENGTH_SHORT).show()
-
-            // 3️⃣ Redirect to LoginActivity
-            val intent = Intent(requireActivity(), LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        // Handle Edit Profile button click
+        editProfileButton.setOnClickListener {
+            val intent = Intent(activity, ManageProfileActivity::class.java)
             startActivity(intent)
         }
 
-        return root
-    }
+        // Handle Manage Trips button click
+        manageTripsButton.setOnClickListener {
+            val intent = Intent(activity, ManageTrips::class.java)
+            startActivity(intent)
+        }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        // Handle Help button click
+        helpButton.setOnClickListener {
+            val helpDialog = AlertDialog.Builder(requireActivity())  // Using requireActivity for context
+                .setTitle("Help")
+                .setMessage("Here you can change your email, password, or delete your account. For more assistance, please contact support.")
+                .setPositiveButton("OK", null)
+                .create()
+
+            helpDialog.show()
+        }
+
+        // Handle About button click
+        aboutButton.setOnClickListener {
+            val aboutDialog = AlertDialog.Builder(requireActivity())  // Using requireActivity for context
+                .setTitle("About")
+                .setMessage(
+                    "This app was developed by PackPal.\n" +
+                            "Version: 1.0\n" +
+                            "For more information, visit our website or contact support."
+                )
+                .setPositiveButton("OK", null)
+                .create()
+
+            aboutDialog.show()
+        }
+
+        // Handle Log out button click
+        logoutButton.setOnClickListener {
+            // Clear user preferences and navigate back to Login Activity
+            val sharedPref = activity?.getSharedPreferences("UserPrefs", AppCompatActivity.MODE_PRIVATE)  // Using activity context
+            val editor = sharedPref?.edit()
+            editor?.clear()
+            editor?.apply()
+
+            val intent = Intent(activity, LoginActivity::class.java)
+            startActivity(intent)
+            activity?.finish()  // Use activity?.finish() to finish the current activity
+        }
+
+        return rootView
     }
 }
-

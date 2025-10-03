@@ -22,4 +22,9 @@
         android:name="com.example.prog7314poepart2.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+    <activity
+        android:id="@+id/contactUsActivity"
+        android:name="com.example.prog7314poepart2.ContactUsActivity"
+        android:label="activity_contact_us"
+        tools:layout="@layout/activity_contact_us" />
 </navigation>

@@ -15,5 +15,9 @@
         android:id="@+id/navigation_notifications"
         android:icon="@drawable/profile_circle_svgrepo_com"
         android:title="@string/Profile" />
+    <item
+        android:id="@+id/contactUsActivity"
+        android:icon="@android:drawable/stat_sys_phone_call"
+        android:title="Contact Us" />
 
 </menu>
