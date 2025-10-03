@@ -10,7 +10,7 @@ class ProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_profile)
+        setContentView(R.layout.fragment_notifications)
 
         val editProfileButton = findViewById<Button>(R.id.editProfileButton)
         val manageTripsButton = findViewById<Button>(R.id.manageTripsButton)
