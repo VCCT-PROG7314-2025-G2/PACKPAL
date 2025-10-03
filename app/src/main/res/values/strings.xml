@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">PROG7314POEPART2</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="trips" />
+    <string name="profile" />
+    <string name="Trips">Trips</string>
+    <string name="Profile">Profile</string>
+    <string name="openweather_api_key">98fb83b0ef5d7a805494ba9f551e3c70</string>
+</resources>
