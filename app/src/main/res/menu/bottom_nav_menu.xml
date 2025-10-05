@@ -10,14 +10,15 @@
         android:id="@+id/navigation_dashboard"
         android:icon="@drawable/plane_svgrepo_com"
         android:title="@string/Trips" />
+    <item
+        android:id="@+id/contactUsFragment"
+        android:icon="@android:drawable/stat_sys_phone_call"
+        android:title="Contact Us" />
 
     <item
         android:id="@+id/navigation_notifications"
         android:icon="@drawable/profile_circle_svgrepo_com"
         android:title="@string/Profile" />
-    <item
-        android:id="@+id/contactUsActivity"
-        android:icon="@android:drawable/stat_sys_phone_call"
-        android:title="Contact Us" />
+
 
 </menu>

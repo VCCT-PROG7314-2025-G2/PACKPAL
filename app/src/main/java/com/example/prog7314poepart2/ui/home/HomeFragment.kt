@@ -35,9 +35,8 @@ class HomeFragment : Fragment() {
 
         // Click on trip → open WeatherActivity
         listView.setOnItemClickListener { _, _, position, _ ->
-            val destination = tripsList[position].country
             startActivity(Intent(requireContext(), WeatherActivity::class.java).apply {
-                putExtra("DESTINATION", destination)
+                putExtra("tripIndex", position)
             })
         }
     }

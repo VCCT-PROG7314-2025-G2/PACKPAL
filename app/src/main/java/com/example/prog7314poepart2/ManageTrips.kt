@@ -13,8 +13,8 @@ import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.example.prog7314poepart2.R
 
 class ManageTrips : AppCompatActivity() {
 
@@ -38,17 +38,26 @@ class ManageTrips : AppCompatActivity() {
         listView.adapter = adapter
 
         listView.setOnItemClickListener { _, _, position, _ ->
-            Log.d("ManageTrips", "Launching WeatherActivity with tripIndex: $position, trips size: ${TripRepository.trips.size}")
             if (position >= 0 && position < TripRepository.trips.size) {
-                val intent = Intent(this, WeatherActivity::class.java).apply {
-                    putExtra("tripIndex", position)
-                }
-                startActivity(intent)
+                val trip = TripRepository.trips[position]
+
+                AlertDialog.Builder(this)
+                    .setTitle("Delete Trip")
+                    .setMessage("Do you want to delete ${trip.tripName}?")
+                    .setPositiveButton("Yes") { _, _ ->
+                        TripRepository.trips.removeAt(position)
+                        adapter.notifyDataSetChanged()
+                        Toast.makeText(this, "Trip deleted", Toast.LENGTH_SHORT).show()
+                    }
+                    .setNegativeButton("No") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .show()
             } else {
-                Log.e("ManageTrips", "Invalid position: $position")
                 Toast.makeText(this, "Invalid trip selected", Toast.LENGTH_SHORT).show()
             }
         }
+
 
         val backButton = findViewById<Button>(R.id.btnBack)
         backButton.setOnClickListener {

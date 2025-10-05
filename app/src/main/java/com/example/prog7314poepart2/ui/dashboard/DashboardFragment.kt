@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.prog7314poepart2.CreateTrips
 import com.example.prog7314poepart2.UpcomingTrips
 import com.example.prog7314poepart2.databinding.FragmentDashboardBinding
 
@@ -28,7 +29,7 @@ class DashboardFragment : Fragment() {
 
         // Add this: navigate to UpcomingTrips activity on button click
         binding.button2.setOnClickListener {
-            val intent = Intent(requireActivity(), UpcomingTrips::class.java)
+            val intent = Intent(requireActivity(), CreateTrips::class.java)
             startActivity(intent)
         }
 

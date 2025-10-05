@@ -1,17 +1,16 @@
 package com.example.prog7314poepart2
 
-import android.app.DatePickerDialog
+import android.app.*
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.example.prog7314poepart2.R
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
@@ -51,7 +50,6 @@ class CreateTrips : AppCompatActivity() {
         val cbFamily = findViewById<CheckBox>(R.id.cbFamily)
         val cbAdventure = findViewById<CheckBox>(R.id.cbAdventure)
 
-        // Fetch weather when country is entered
         country.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus && country.text.isNotBlank()) {
                 Log.d("CreateTrips", "Country input: ${country.text}")
@@ -59,13 +57,11 @@ class CreateTrips : AppCompatActivity() {
             }
         }
 
-        // Date pickers
         startDate.setOnClickListener { showDatePicker(startDate) }
         endDate.setOnClickListener { showDatePicker(endDate) }
 
         val tripIndex = intent.getIntExtra("tripIndex", -1)
 
-        // Editing existing trip
         if (tripIndex != -1) {
             val trip = TripRepository.trips[tripIndex]
             tripName.setText(trip.tripName)
@@ -106,11 +102,18 @@ class CreateTrips : AppCompatActivity() {
             )
 
             if (tripIndex != -1) {
-                TripRepository.trips[tripIndex] = trip // update existing
+                TripRepository.trips[tripIndex] = trip
                 Log.d("CreateTrips", "Updated trip at index $tripIndex: $trip")
             } else {
                 TripRepository.trips.add(trip) // add new
                 Log.d("CreateTrips", "Added new trip: $trip")
+
+                if (TripRepository.trips.size >= 5) {
+                    showAchievementNotification()
+                }else
+                    if (TripRepository.trips.size == 1) {
+                        showAchievementNotification2()
+                    }
             }
 
             setResult(RESULT_OK)
@@ -119,10 +122,13 @@ class CreateTrips : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+
         val backButton = findViewById<Button>(R.id.btnBack)
         backButton.setOnClickListener {
             finish()
         }
+
+        createNotificationChannel()
     }
 
     private fun showDatePicker(editText: EditText) {
@@ -202,5 +208,45 @@ class CreateTrips : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                "trip_rewards",
+                "Trip Rewards",
+                NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                description = "Notifications for achievements like Master Explorer"
+            }
+            val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            manager.createNotificationChannel(channel)
+        }
+    }
+
+    private fun showAchievementNotification() {
+        val builder = NotificationCompat.Builder(this, "trip_rewards")
+            .setSmallIcon(R.drawable.plane_svgrepo_com)
+            .setContentTitle("🏅 Achievement Unlocked!")
+            .setContentText("Congratulations! You are now a Master Explorer! 🌍")
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true)
+
+        with(NotificationManagerCompat.from(this)) {
+            notify(1001, builder.build())
+        }
+    }
+    private fun showAchievementNotification2() {
+        val builder = NotificationCompat.Builder(this, "trip_rewards")
+            .setSmallIcon(R.drawable.packpalboxlogo)
+            .setContentTitle("🏅 Achievement Unlocked!")
+            .setContentText("Baby explorer🌍🍼")
+
+        .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true)
+
+        with(NotificationManagerCompat.from(this)) {
+            notify(1001, builder.build())
+        }
     }
 }

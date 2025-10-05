@@ -1,65 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#010102"
-    tools:context=".ManageProfileActivity">
+    android:padding="24dp"
+    android:background="#010102">
 
-    <!-- Email Field -->
-    <EditText
-        android:id="@+id/editEmail"
+    <!-- Title -->
+    <TextView
+        android:id="@+id/tvManageTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginHorizontal="32dp"
-        android:backgroundTint="#FBFBFB"
-        android:hint="Email"
-        android:textColor="#FDFDFD"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Manage Account"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- Username Field -->
-    <EditText
-        android:id="@+id/editUsername"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginHorizontal="32dp"
-        android:backgroundTint="#FBFBFB"
-        android:hint="Username"
-        android:textColor="#FDFDFD"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editEmail" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Change Password Button -->
     <Button
         android:id="@+id/changePasswordButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="#00BCD4"
+        android:layout_marginTop="32dp"
         android:text="Change Password"
-        android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editUsername" />
-
-    <!-- Change Email Button -->
-    <Button
-        android:id="@+id/changeEmailButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:textAllCaps="false"
+        android:padding="12dp"
         android:backgroundTint="#00BCD4"
-        android:text="Change Email"
         android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvManageTitle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/changePasswordButton" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Delete Account Button -->
     <Button
@@ -67,11 +42,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:backgroundTint="#FF5722"
         android:text="Delete Account"
+        android:textAllCaps="false"
+        android:padding="12dp"
+        android:backgroundTint="#FF5722"
         android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/changePasswordButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/changeEmailButton" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
