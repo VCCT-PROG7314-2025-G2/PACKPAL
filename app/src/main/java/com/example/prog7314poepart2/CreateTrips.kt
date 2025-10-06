@@ -232,21 +232,47 @@ class CreateTrips : AppCompatActivity() {
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
 
-        with(NotificationManagerCompat.from(this)) {
-            notify(1001, builder.build())
+        val notificationManager = NotificationManagerCompat.from(this)
+
+        if (androidx.core.app.ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.POST_NOTIFICATIONS
+            ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+        ) {
+            notificationManager.notify(1001, builder.build())
+        } else {
+            androidx.core.app.ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+                1001
+            )
         }
     }
+
     private fun showAchievementNotification2() {
         val builder = NotificationCompat.Builder(this, "trip_rewards")
             .setSmallIcon(R.drawable.packpalboxlogo)
             .setContentTitle("🏅 Achievement Unlocked!")
-            .setContentText("Baby explorer🌍🍼")
-
-        .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentText("Baby explorer 🌍🍼")
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
 
-        with(NotificationManagerCompat.from(this)) {
-            notify(1001, builder.build())
+        val notificationManager = NotificationManagerCompat.from(this)
+
+        if (androidx.core.app.ActivityCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.POST_NOTIFICATIONS
+            ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+        ) {
+            notificationManager.notify(1002, builder.build())
+        } else {
+            androidx.core.app.ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+                1002
+            )
         }
     }
+
+
 }
