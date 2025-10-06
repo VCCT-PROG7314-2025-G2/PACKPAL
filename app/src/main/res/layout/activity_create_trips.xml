@@ -77,12 +77,14 @@
         android:id="@+id/btnCreateTrip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="#00BCD4"
         android:text="Create Trip" />
 
     <Button
         android:id="@+id/btnBack"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="#00BCD4"
         android:text="Back" />
 
 </LinearLayout>
