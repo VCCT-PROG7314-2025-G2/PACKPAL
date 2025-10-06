@@ -1,16 +1,22 @@
 package com.example.prog7314poepart2
 
+import android.Manifest
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
@@ -23,15 +29,21 @@ class CreateTrips : AppCompatActivity() {
     private val client = OkHttpClient()
     private var weatherCondition: String = ""
 
-    private val weatherActivityLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == RESULT_OK) {
-            weatherCondition = result.data?.getStringExtra("WEATHER_CONDITION") ?: ""
-            weatherText.text = "Weather condition: $weatherCondition"
-            Log.d("CreateTrips", "Weather condition from WeatherActivity: $weatherCondition")
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (!isGranted) {
+                AlertDialog.Builder(this)
+                    .setTitle("Enable Notifications")
+                    .setMessage("Please enable notifications to get trip achievements and updates.")
+                    .setPositiveButton("Open Settings") { _, _ ->
+                        val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                            .putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+                        startActivity(intent)
+                    }
+                    .setNegativeButton("Cancel", null)
+                    .show()
+            }
         }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +55,7 @@ class CreateTrips : AppCompatActivity() {
         val endDate = findViewById<EditText>(R.id.etEndDate)
         val notes = findViewById<EditText>(R.id.etNotes)
         val createButton = findViewById<Button>(R.id.btnCreateTrip)
-        weatherText = findViewById<TextView>(R.id.weatherText)
+        weatherText = findViewById(R.id.weatherText)
 
         val cbBusiness = findViewById<CheckBox>(R.id.cbBusiness)
         val cbLeisure = findViewById<CheckBox>(R.id.cbLeisure)
@@ -52,7 +64,6 @@ class CreateTrips : AppCompatActivity() {
 
         country.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus && country.text.isNotBlank()) {
-                Log.d("CreateTrips", "Country input: ${country.text}")
                 fetchWeather(country.text.toString())
             }
         }
@@ -61,7 +72,6 @@ class CreateTrips : AppCompatActivity() {
         endDate.setOnClickListener { showDatePicker(endDate) }
 
         val tripIndex = intent.getIntExtra("tripIndex", -1)
-
         if (tripIndex != -1) {
             val trip = TripRepository.trips[tripIndex]
             tripName.setText(trip.tripName)
@@ -71,7 +81,6 @@ class CreateTrips : AppCompatActivity() {
             notes.setText(trip.notes)
             weatherCondition = trip.weatherCondition
             weatherText.text = "Weather condition: $weatherCondition"
-            Log.d("CreateTrips", "Editing trip at index $tripIndex: $trip")
 
             cbBusiness.isChecked = "Business" in trip.tripTypes
             cbLeisure.isChecked = "Leisure" in trip.tripTypes
@@ -80,7 +89,9 @@ class CreateTrips : AppCompatActivity() {
         }
 
         createButton.setOnClickListener {
-            if (tripName.text.isBlank() || country.text.isBlank() || startDate.text.isBlank() || endDate.text.isBlank()) {
+            if (tripName.text.isBlank() || country.text.isBlank() ||
+                startDate.text.isBlank() || endDate.text.isBlank()
+            ) {
                 Toast.makeText(this, "Please fill in all required fields", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -103,32 +114,26 @@ class CreateTrips : AppCompatActivity() {
 
             if (tripIndex != -1) {
                 TripRepository.trips[tripIndex] = trip
-                Log.d("CreateTrips", "Updated trip at index $tripIndex: $trip")
             } else {
-                TripRepository.trips.add(trip) // add new
-                Log.d("CreateTrips", "Added new trip: $trip")
-
+                TripRepository.trips.add(trip)
                 if (TripRepository.trips.size >= 5) {
-                    showAchievementNotification()
-                }else
-                    if (TripRepository.trips.size == 1) {
-                        showAchievementNotification2()
-                    }
+                    showAchievementNotification("🏅 Achievement Unlocked!", "Congratulations! You are now a Master Explorer! 🌍")
+                } else if (TripRepository.trips.size == 1) {
+                    showAchievementNotification("🏅 Achievement Unlocked!", "Baby explorer 🌍🍼")
+                }
             }
 
             setResult(RESULT_OK)
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("navigateTo", "home")
-            startActivity(intent)
+            startActivity(Intent(this, MainActivity::class.java).apply {
+                putExtra("navigateTo", "home")
+            })
             finish()
         }
 
-        val backButton = findViewById<Button>(R.id.btnBack)
-        backButton.setOnClickListener {
-            finish()
-        }
+        findViewById<Button>(R.id.btnBack).setOnClickListener { finish() }
 
         createNotificationChannel()
+        askNotificationPermission()
     }
 
     private fun showDatePicker(editText: EditText) {
@@ -136,8 +141,7 @@ class CreateTrips : AppCompatActivity() {
         DatePickerDialog(
             this,
             { _, year, month, dayOfMonth ->
-                val dateStr = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
-                editText.setText(dateStr)
+                editText.setText(String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth))
             },
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
@@ -147,64 +151,40 @@ class CreateTrips : AppCompatActivity() {
 
     private fun fetchWeather(city: String) {
         val apiKey = getString(R.string.openweather_api_key)
-        if (apiKey.isBlank() || apiKey == "YOUR_ACTUAL_API_KEY_HERE") {
-            Log.e("CreateTrips", "API key missing or invalid")
-            runOnUiThread {
-                weatherText.text = "OpenWeather API key missing."
-                weatherCondition = "Unknown"
-                Toast.makeText(this, "Add API key to strings.xml", Toast.LENGTH_LONG).show()
-            }
+        if (apiKey.isBlank()) {
+            weatherText.text = "Missing API key."
+            weatherCondition = "Unknown"
             return
         }
 
         val encodedCity = URLEncoder.encode(city, "UTF-8")
         val url = "https://api.openweathermap.org/data/2.5/weather?q=$encodedCity&appid=$apiKey&units=metric"
-        Log.d("CreateTrips", "Fetching weather for URL: $url")
 
         val request = Request.Builder().url(url).build()
-
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Log.e("CreateTrips", "Weather fetch failed: ${e.message}")
                 runOnUiThread {
-                    weatherText.text = "Failed to fetch weather: ${e.message}"
+                    weatherText.text = "Failed: ${e.message}"
                     weatherCondition = "Unknown"
-                    Toast.makeText(this@CreateTrips, "Network error: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onResponse(call: Call, response: Response) {
-                val code = response.code
-                val bodyStr = response.body?.string()
-                Log.d("CreateTrips", "Response code: $code, body: $bodyStr")
-
-                if (!response.isSuccessful || bodyStr.isNullOrBlank()) {
+                val body = response.body?.string()
+                if (!response.isSuccessful || body.isNullOrEmpty()) {
                     runOnUiThread {
-                        weatherText.text = if (code == 404) "Location not found." else "Failed to fetch weather (code $code)."
-                        weatherCondition = "Unknown"
-                        Toast.makeText(this@CreateTrips, if (code == 404) "Location not found: $city" else "Weather fetch error (code $code)", Toast.LENGTH_SHORT).show()
+                        weatherText.text = "Error: ${response.code}"
                     }
                     return
                 }
 
                 try {
-                    val json = JSONObject(bodyStr)
-                    val weatherArray = json.getJSONArray("weather")
-                    val weatherObj = weatherArray.getJSONObject(0)
-                    weatherCondition = weatherObj.optString("main", "Unknown")
-                    Log.d("CreateTrips", "Weather condition fetched: $weatherCondition")
-
-                    runOnUiThread {
-                        weatherText.text = "Weather condition: $weatherCondition"
-                        Toast.makeText(this@CreateTrips, "Weather fetched: $weatherCondition", Toast.LENGTH_SHORT).show()
-                    }
+                    val json = JSONObject(body)
+                    val condition = json.getJSONArray("weather").getJSONObject(0).optString("main", "Unknown")
+                    weatherCondition = condition
+                    runOnUiThread { weatherText.text = "Weather: $condition" }
                 } catch (e: Exception) {
-                    Log.e("CreateTrips", "Error parsing weather data: ${e.message}")
-                    runOnUiThread {
-                        weatherText.text = "Error parsing weather data."
-                        weatherCondition = "Unknown"
-                        Toast.makeText(this@CreateTrips, "Error parsing weather: ${e.message}", Toast.LENGTH_SHORT).show()
-                    }
+                    runOnUiThread { weatherText.text = "Parse error." }
                 }
             }
         })
@@ -217,62 +197,56 @@ class CreateTrips : AppCompatActivity() {
                 "Trip Rewards",
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {
-                description = "Notifications for achievements like Master Explorer"
+                description = "Notifications for achievements"
             }
             val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             manager.createNotificationChannel(channel)
         }
     }
 
-    private fun showAchievementNotification() {
-        val builder = NotificationCompat.Builder(this, "trip_rewards")
-            .setSmallIcon(R.drawable.plane_svgrepo_com)
-            .setContentTitle("🏅 Achievement Unlocked!")
-            .setContentText("Congratulations! You are now a Master Explorer! 🌍")
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setAutoCancel(true)
+    private fun askNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            when {
+                ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
+                        PackageManager.PERMISSION_GRANTED -> {
+                    // Already granted
+                }
 
-        val notificationManager = NotificationManagerCompat.from(this)
+                shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS) -> {
+                    AlertDialog.Builder(this)
+                        .setTitle("Enable Notifications")
+                        .setMessage("We need permission to notify you about trip achievements.")
+                        .setPositiveButton("Allow") { _, _ ->
+                            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                        }
+                        .setNegativeButton("Cancel", null)
+                        .show()
+                }
 
-        if (androidx.core.app.ActivityCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.POST_NOTIFICATIONS
-            ) == android.content.pm.PackageManager.PERMISSION_GRANTED
-        ) {
-            notificationManager.notify(1001, builder.build())
-        } else {
-            androidx.core.app.ActivityCompat.requestPermissions(
-                this,
-                arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
-                1001
-            )
+                else -> {
+                    requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                }
+            }
         }
     }
 
-    private fun showAchievementNotification2() {
+    private fun showAchievementNotification(title: String, message: String) {
         val builder = NotificationCompat.Builder(this, "trip_rewards")
             .setSmallIcon(R.drawable.packpalboxlogo)
-            .setContentTitle("🏅 Achievement Unlocked!")
-            .setContentText("Baby explorer 🌍🍼")
+            .setContentTitle(title)
+            .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
 
         val notificationManager = NotificationManagerCompat.from(this)
-
-        if (androidx.core.app.ActivityCompat.checkSelfPermission(
+        if (ActivityCompat.checkSelfPermission(
                 this,
-                android.Manifest.permission.POST_NOTIFICATIONS
-            ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+                Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED || Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU
         ) {
-            notificationManager.notify(1002, builder.build())
+            notificationManager.notify(Random().nextInt(), builder.build())
         } else {
-            androidx.core.app.ActivityCompat.requestPermissions(
-                this,
-                arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
-                1002
-            )
+            askNotificationPermission()
         }
     }
-
-
 }
