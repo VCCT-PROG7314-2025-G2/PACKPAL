@@ -12,6 +12,7 @@
         android:id="@+id/button2"
         android:layout_width="232dp"
         android:layout_height="66dp"
+        android:backgroundTint="#00BCD4"
         android:text="Pack for your new adventure"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -45,6 +45,8 @@ class ManageProfileActivity : AppCompatActivity() {
                 .show()
         }
 
+        findViewById<Button>(R.id.btnBack2).setOnClickListener { finish() }
+
         // 🗑️ Delete Account logic
         deleteAccountButton.setOnClickListener {
             AlertDialog.Builder(this)

@@ -2,12 +2,26 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="24dp"
     android:background="#010102">
 
     <!-- Title -->
+
+    <Button
+        android:id="@+id/btnBack2"
+        android:layout_width="359dp"
+        android:layout_height="53dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#00BCD4"
+        android:text="Back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/changePasswordButton" />
+
     <TextView
         android:id="@+id/tvManageTitle"
         android:layout_width="0dp"
@@ -22,33 +36,36 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Change Password Button -->
+
+    <!-- Delete Account Button -->
     <Button
         android:id="@+id/changePasswordButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="36dp"
+        android:backgroundTint="#00BCD4"
+        android:padding="12dp"
         android:text="Change Password"
         android:textAllCaps="false"
-        android:padding="12dp"
-        android:backgroundTint="#00BCD4"
         android:textColor="#FFFFFF"
-        app:layout_constraintTop_toBottomOf="@id/tvManageTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/tvManageTitle" />
 
-    <!-- Delete Account Button -->
     <Button
         android:id="@+id/deleteAccountButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#FF5722"
+        android:padding="12dp"
         android:text="Delete Account"
         android:textAllCaps="false"
-        android:padding="12dp"
-        android:backgroundTint="#FF5722"
         android:textColor="#FFFFFF"
-        app:layout_constraintTop_toBottomOf="@id/changePasswordButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/btnBack2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
