@@ -16,18 +16,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
-        // Inflate the layout
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Get the BottomNavigationView
+
         val navView: BottomNavigationView = binding.navView
 
-        // Setup the NavController
+
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
 
-        // Remove ActionBar setup
-        // (No setupActionBarWithNavController needed because we have NoActionBar theme)
         navView.setupWithNavController(navController)
     }
 }
