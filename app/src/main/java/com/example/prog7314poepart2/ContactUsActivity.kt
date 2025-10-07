@@ -23,3 +23,4 @@ class ContactUsActivity : AppCompatActivity() {
         socialLinksText.text = "Social: Twitter | Instagram | Facebook"
     }
 }
+// (Android Knowledge, 2023)
