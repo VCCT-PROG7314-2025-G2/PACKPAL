@@ -136,7 +136,7 @@ class CreateTrips : AppCompatActivity() {
         askNotificationPermission()
     }
 
-    private fun showDatePicker(editText: EditText) {
+    private fun showDatePicker(editText: EditText) { // Coding with Dev (2023). android date picker dialog example | DatePickerDialog - Android Studio Tutorial | Kotlin. [online] YouTube. Available at: https://www.youtube.com/watch?v=DpL8DhCNKdE&list=PLv59B8ZxVvbv0k49hQxK10bT1fYEmWvMU&index=2 [Accessed 1 May 2025].
         val calendar = Calendar.getInstance()
         DatePickerDialog(
             this,
