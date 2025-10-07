@@ -11,7 +11,7 @@ data class Trip(
     val endDate: String,
     val notes: String?,
     val tripTypes: List<String>, // NEW: multiple trip type selection
-    val weatherCondition: String = "" // Added for weather icon feature
+    val weatherCondition: String = "" 
 ) {
     fun getStartDateAsDate(): Date {
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US)
