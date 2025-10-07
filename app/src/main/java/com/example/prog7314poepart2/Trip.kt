@@ -27,3 +27,4 @@ data class Trip(
         }
     }
 }
+// (Andy's Tech Tutorials, 2022)
