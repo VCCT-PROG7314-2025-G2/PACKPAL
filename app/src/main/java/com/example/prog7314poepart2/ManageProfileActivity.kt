@@ -21,7 +21,7 @@ class ManageProfileActivity : AppCompatActivity() {
         val sharedPref = getSharedPreferences("UserPrefs", MODE_PRIVATE)
         val editor = sharedPref.edit()
 
-        // 🔐 Change Password logic
+
         changePasswordButton.setOnClickListener {
             val newPasswordInput = EditText(this).apply {
                 hint = "Enter new password"
@@ -47,7 +47,7 @@ class ManageProfileActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btnBack2).setOnClickListener { finish() }
 
-        // 🗑️ Delete Account logic
+
         deleteAccountButton.setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("Delete Account")
