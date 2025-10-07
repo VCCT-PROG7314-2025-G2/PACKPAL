@@ -136,7 +136,7 @@ class CreateTrips : AppCompatActivity() {
         askNotificationPermission()
     }
 
-    private fun showDatePicker(editText: EditText) { // Coding with Dev (2023). android date picker dialog example | DatePickerDialog - Android Studio Tutorial | Kotlin. [online] YouTube. Available at: https://www.youtube.com/watch?v=DpL8DhCNKdE&list=PLv59B8ZxVvbv0k49hQxK10bT1fYEmWvMU&index=2 [Accessed 1 May 2025].
+    private fun showDatePicker(editText: EditText) { // (Coding with Dev, 2023)
         val calendar = Calendar.getInstance()
         DatePickerDialog(
             this,
@@ -148,7 +148,7 @@ class CreateTrips : AppCompatActivity() {
             calendar.get(Calendar.DAY_OF_MONTH)
         ).show()
     }
-    // Developer (2024). Date pickers. [online] Android Developers. Available at: https://developer.android.com/develop/ui/compose/components/datepickers [Accessed 1 May 2025].
+    // (Developer, 2024)
 
     private fun fetchWeather(city: String) {
         val apiKey = getString(R.string.openweather_api_key)
