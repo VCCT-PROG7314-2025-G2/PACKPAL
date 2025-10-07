@@ -91,7 +91,7 @@ class ManageTrips : AppCompatActivity() {
             tripNameText.text = "${trip.tripName} (${trip.country})"
             weatherText.text = trip.weatherCondition
 
-            // Set weather icon based on condition
+            // weather icons
             val iconResId = when (trip.weatherCondition.lowercase()) {
                 "clear" -> R.drawable.ic_sunny
                 "clouds" -> R.drawable.ic_cloudy
