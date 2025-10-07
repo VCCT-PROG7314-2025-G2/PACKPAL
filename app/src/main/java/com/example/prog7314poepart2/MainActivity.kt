@@ -29,3 +29,4 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 }
+// (Android Knowledge, 2022)
