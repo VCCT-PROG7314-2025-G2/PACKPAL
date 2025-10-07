@@ -16,7 +16,6 @@ class ContactUsActivity : AppCompatActivity() {
         val phoneContactText = findViewById<TextView>(R.id.phoneContact)
         val socialLinksText = findViewById<TextView>(R.id.socialLinks)
 
-        // Populate the contact information
         contactInfoText.text = "We'd love to hear from you! Whether you've got feedback, questions, or just want to say hi—reach out anytime."
         addressText.text = "Address: 123 Walsh Street, Cape Town, South Africa"
         emailContactText.text = "Email: support@packpals.com"
