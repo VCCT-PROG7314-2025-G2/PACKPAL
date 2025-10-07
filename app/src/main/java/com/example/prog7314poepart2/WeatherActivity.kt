@@ -134,3 +134,4 @@ class WeatherActivity : AppCompatActivity() {
         return essentials + baseList
     }
 }
+// (Andy's Tech Tutorials, 2022)
