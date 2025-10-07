@@ -148,6 +148,7 @@ class CreateTrips : AppCompatActivity() {
             calendar.get(Calendar.DAY_OF_MONTH)
         ).show()
     }
+    // Developer (2024). Date pickers. [online] Android Developers. Available at: https://developer.android.com/develop/ui/compose/components/datepickers [Accessed 1 May 2025].
 
     private fun fetchWeather(city: String) {
         val apiKey = getString(R.string.openweather_api_key)
