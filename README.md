@@ -60,7 +60,9 @@ The PackPals project is hosted on GitHub with multiple commits tracking iterativ
 - Add offline mode for weather data caching.
 
 ---
-
+## **YouTube Video**
+https://youtu.be/LLNWOuGSlLU
+---
 ## **Contributors**
 - [Liyema Mangcu] - ST10143385
 - [Ganeef Salie] - ST10214012
