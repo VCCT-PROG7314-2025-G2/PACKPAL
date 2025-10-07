@@ -31,7 +31,7 @@ class LoginActivity : AppCompatActivity() {
             val savedPassword = sharedPref.getString("user_password", null)
 
             if (email == savedEmail && password == savedPassword) {
-                // ✅ Save currently logged-in user
+
                 val editor = sharedPref.edit()
                 editor.putString("logged_in_email", email)
                 editor.apply()
