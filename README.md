@@ -87,3 +87,4 @@ https://youtu.be/LLNWOuGSlLU
 - Shahi, S. (2023). How to create bottom navigation in Android using Kotlin- Beginners Guide. [online] Medium. Available at: https://medium.com/@shahisofiya575/how-to-create-bottom-navigation-in-android-using-material-design-9de844c484a [Accessed 10 Apr 2025].
 - Philipp Lackner (2022). Local Notifications in Android - The Full Guide (Android Studio Tutorial). [online] YouTube. Available at: https://www.youtube.com/watch?v=LP623htmWcI [Accessed 26 Nov. 2024].
 -  Andy's Tech Tutorials (2022). [Tutorial] - How to Use Weather API for Beginners | Open Weather Map API. [online] Youtu.be. Available at: https://youtu.be/MdIfZJ08g2I?si=gy4aTigN_vK77nzT [Accessed 28 Sep. 2025].
+-  Flaticon. “Flaticon, the Largest Database of Free Vector Icons.” Flaticon, 2025, www.flaticon.com/.
