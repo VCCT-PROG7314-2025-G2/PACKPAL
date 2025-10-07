@@ -25,7 +25,6 @@ class UpcomingTrips : AppCompatActivity() {
         ) { result ->
             if (result.resultCode == RESULT_OK) {
                 // no adapter anymore, so handle UI update differently if needed
-                // e.g., refresh data on screen or just ignore
             }
         }
 
@@ -40,7 +39,6 @@ class UpcomingTrips : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // No adapter anymore, so nothing to notify
     }
 }
 
