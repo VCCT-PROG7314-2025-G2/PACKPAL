@@ -7,10 +7,10 @@ import java.util.Locale
 data class Trip(
     val tripName: String,
     val country: String,
-    val startDate: String, // YYYY-MM-DD
+    val startDate: String, 
     val endDate: String,
     val notes: String?,
-    val tripTypes: List<String>, // NEW: multiple trip type selection
+    val tripTypes: List<String>, 
     val weatherCondition: String = "" 
 ) {
     fun getStartDateAsDate(): Date {
