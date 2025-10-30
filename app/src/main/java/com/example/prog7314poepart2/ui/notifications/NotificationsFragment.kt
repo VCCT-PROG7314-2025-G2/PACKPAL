@@ -73,7 +73,7 @@ class NotificationsFragment : Fragment() {
             // Clear user preferences and navigate back to Login Activity
             val sharedPref = activity?.getSharedPreferences("UserPrefs", AppCompatActivity.MODE_PRIVATE)  // Using activity context
             val editor = sharedPref?.edit()
-            editor?.clear()
+            editor?.remove("logged_in_email")
             editor?.apply()
 
             val intent = Intent(activity, LoginActivity::class.java)

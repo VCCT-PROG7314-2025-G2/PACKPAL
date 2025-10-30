@@ -37,7 +37,7 @@ class SignUpActivity : AppCompatActivity() {
 
                     Toast.makeText(this, "Account created! Please login.", Toast.LENGTH_SHORT).show()
 
-                    // ✅ Instead of logging in directly, just go back to LoginActivity
+                   
                     finish()
                 } else {
                     Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()

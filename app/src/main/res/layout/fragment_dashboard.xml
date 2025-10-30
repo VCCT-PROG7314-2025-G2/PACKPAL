@@ -7,21 +7,12 @@
     tools:context=".ui.dashboard.DashboardFragment">
 
     <!-- Centered Image at Top -->
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="132dp"
-        android:layout_height="81dp"
-        app:srcCompat="@drawable/packpalboxlogo"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
-        android:contentDescription="Logo" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="232dp"
         android:layout_height="66dp"
+        android:backgroundTint="#00BCD4"
         android:text="Pack for your new adventure"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
