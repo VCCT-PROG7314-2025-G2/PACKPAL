@@ -8,77 +8,85 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment  // Make sure to import the correct Fragment
+import androidx.fragment.app.Fragment
 import com.example.prog7314poepart2.LoginActivity
 import com.example.prog7314poepart2.ManageProfileActivity
 import com.example.prog7314poepart2.ManageTrips
 import com.example.prog7314poepart2.R
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 
 class NotificationsFragment : Fragment() {
+
+    private lateinit var googleSignInClient: GoogleSignInClient
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the fragment layout
         val rootView = inflater.inflate(R.layout.fragment_notifications, container, false)
 
-        // Get references to the buttons
         val editProfileButton = rootView.findViewById<Button>(R.id.editProfileButton)
         val manageTripsButton = rootView.findViewById<Button>(R.id.manageTripsButton)
         val helpButton = rootView.findViewById<Button>(R.id.helpButton)
         val aboutButton = rootView.findViewById<Button>(R.id.aboutButton)
         val logoutButton = rootView.findViewById<Button>(R.id.logoutButton)
 
-        // Handle Edit Profile button click
+        // Setup Google Sign-In Client (same config as LoginActivity)
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build()
+        googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
+
+        // --- Button Listeners ---
+
         editProfileButton.setOnClickListener {
-            val intent = Intent(activity, ManageProfileActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(activity, ManageProfileActivity::class.java))
         }
 
-        // Handle Manage Trips button click
         manageTripsButton.setOnClickListener {
-            val intent = Intent(activity, ManageTrips::class.java)
-            startActivity(intent)
+            startActivity(Intent(activity, ManageTrips::class.java))
         }
 
-        // Handle Help button click
         helpButton.setOnClickListener {
-            val helpDialog = AlertDialog.Builder(requireActivity())  // Using requireActivity for context
+            AlertDialog.Builder(requireActivity())
                 .setTitle("Help")
                 .setMessage("Here you can change your email, password, or delete your account. For more assistance, please contact support.")
                 .setPositiveButton("OK", null)
-                .create()
-
-            helpDialog.show()
+                .show()
         }
 
-        // Handle About button click
         aboutButton.setOnClickListener {
-            val aboutDialog = AlertDialog.Builder(requireActivity())  // Using requireActivity for context
+            AlertDialog.Builder(requireActivity())
                 .setTitle("About")
-                .setMessage(
-                    "This app was developed by PackPal.\n" +
-                            "Version: 1.0\n" +
-                            "For more information, visit our website or contact support."
-                )
+                .setMessage("This app was developed by PackPal.\nVersion: 1.0\nFor more information, visit our website or contact support.")
                 .setPositiveButton("OK", null)
-                .create()
-
-            aboutDialog.show()
+                .show()
         }
 
-        // Handle Log out button click
+        // ✅ Proper Google Logout
         logoutButton.setOnClickListener {
-            // Clear user preferences and navigate back to Login Activity
-            val sharedPref = activity?.getSharedPreferences("UserPrefs", AppCompatActivity.MODE_PRIVATE)  // Using activity context
-            val editor = sharedPref?.edit()
-            editor?.remove("logged_in_email")
-            editor?.apply()
+            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build()
+            val googleSignInClient = GoogleSignIn.getClient(requireContext(), gso)
 
-            val intent = Intent(activity, LoginActivity::class.java)
-            startActivity(intent)
-            activity?.finish()  // Use activity?.finish() to finish the current activity
+            // Step 1: Sign out from Firebase
+            com.google.firebase.auth.FirebaseAuth.getInstance().signOut()
+
+            // Step 2: Sign out from Google
+            googleSignInClient.signOut().addOnCompleteListener {
+                // Step 3: Clear prefs (optional)
+                val sharedPref = activity?.getSharedPreferences("UserPrefs", AppCompatActivity.MODE_PRIVATE)
+                sharedPref?.edit()?.clear()?.apply()
+
+                // Step 4: Go to LoginActivity and clear backstack
+                val intent = Intent(requireContext(), com.example.prog7314poepart2.LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                requireActivity().finish()
+            }
         }
 
         return rootView
