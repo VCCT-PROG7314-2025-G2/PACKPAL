@@ -1,14 +1,17 @@
 <resources>
     <string name="app_name">PROG7314POEPART2</string>
+    <string name="pack_pal">PACK PAL</string>
+    <string name="default_web_client_id">810932371925-mq7d4bn29ib4fib2bdpqhhvtj345hlqm.apps.googleusercontent.com</string>
+
+    <!-- 🔑 Add this line -->
+    <string name="openweather_api_key">98fb83b0ef5d7a805494ba9f551e3c70</string>
+
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="trips" />
-    <string name="profile" />
     <string name="Trips">Trips</string>
     <string name="Profile">Profile</string>
-    <string name="openweather_api_key">98fb83b0ef5d7a805494ba9f551e3c70</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="pack_pal">PACK PAL</string>
 </resources>
+
+
+

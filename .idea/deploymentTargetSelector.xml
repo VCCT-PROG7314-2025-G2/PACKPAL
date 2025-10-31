@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="PROG7314POEPART2.app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-10-06T17:59:21.006371Z">
+        <DropdownSelection timestamp="2025-10-31T08:11:54.533741800Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\travi\.android\avd\Pixel_4_API_27.avd" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\liyem\.android\avd\Medium_Phone.avd" />
             </handle>
           </Target>
         </DropdownSelection>
